@@ -10,7 +10,7 @@ searchBtn.addEventListener('click', function (event) {
 	var cityName = document.getElementById('cityInput').value;
 	console.log(cityName);
 
-	var requestUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${weatherAPI}`;
+	var requestUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${weatherAPI}&units=imperial`;
 
 	fetch(requestUrl)
 		.then(function (response) {
@@ -19,10 +19,35 @@ searchBtn.addEventListener('click', function (event) {
 		.then(function (data) {
 			console.log(`Data Whole view below`);
 			console.log(data);
-			console.log(data.length);
-			var listCity = document.createElement('span');
-			listCity.textContent = data.name;
-			currDay.append(listCity);
+			console.log(data.city);
+			var listCity = data.name;
+			currDay.children[0].innerHTML = listCity;
+
+			var ulEl = document.createElement('ul');
+			var tempEL = document.createElement('li');
+
+			ulEl.setAttribute('id', 'uList');
+			currDay.appendChild(ulEl);
+			var currentTemp = {
+				temp: data.main.temp,
+				wind: data.wind.speed,
+				humid: data.main.humidity,
+				//UV Found from Long/Lat call needs to be put in
+			};
+
+			//Stored in array on CurrentTemp -- need to for loop to create li's
+
+			// var temp = data.main.temp;
+			// var wind = data.wind.speed;
+			// var humid = data.main.humidity;
+			// var uv = data;
+			// ulEl.append(tempEL);
+			// ulEl.children[0].textContent = temp;
+			// ulEl.append(tempEL);
+			// ulEl.children[1].textContent = wind;
+			// ulEl.append(tempEL);
+			// ulEl.children[2].textContent = humid;
+			// console.log(temp);
 		});
 });
 
