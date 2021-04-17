@@ -3,14 +3,17 @@ var searchBtn = document.querySelector('#searchBtn');
 var currDay = document.querySelector('#currentDay');
 var weatherAPI = '8b5e2ad6d72ea564603e9e5c823217fd';
 var today = dayjs().format('MM_DD_YYYY H');
+var todayFormatted = dayjs().format('MM/DD/YYYY HH:MM');
 console.log(today);
+
+var currentCityLookup = [];
 
 searchBtn.addEventListener('click', function (event) {
 	event.preventDefault;
 	event.stopPropagation;
-	console.log('search button pressed');
+	// console.log('search button pressed');
 	var cityName = document.getElementById('cityInput').value;
-	console.log(cityName);
+	// console.log(cityName);
 	var cityLookup = {};
 	var weather = [];
 
@@ -36,7 +39,7 @@ searchBtn.addEventListener('click', function (event) {
 			return response2.json();
 		})
 		.then(function (data2) {
-			console.log(data2);
+			// console.log(data2);
 			var detailWeather = {
 				city: cityLookup.city,
 				lon: cityLookup.lon,
@@ -85,66 +88,72 @@ searchBtn.addEventListener('click', function (event) {
 				day5_icon: data2.daily[5].weather[0].icon,
 				day5_weather: data2.daily[5].weather[0].main,
 			};
-			console.log(detailWeather);
+			// console.log(detailWeather);
 			var storedCities = JSON.parse(localStorage.getItem('weather'));
 			if (storedCities == null || storedCities == '') {
 				storedCities = [];
 			}
-			console.log(`before -------------`);
-			console.log(storedCities);
+			// console.log(`before -------------`);
+			// console.log(storedCities);
 			storedCities.unshift(detailWeather);
-			console.log(`after --------------`);
-			console.log(storedCities);
+			// console.log(`after --------------`);
+			// console.log(storedCities);
 
 			// 	storedCities.unshift(detailWeather);
 			localStorage.setItem('weather', JSON.stringify(storedCities));
 			// } else {
 			// 	localStorage.setItem('weather', JSON.stringify(detailWeather));
 			// }
+			searchHistory();
+			currentCityLookup = detailWeather;
+			// console.log(currentCityLookup);
+			viewForecast();
 		});
 });
 
-var pastCities = [
-	{
-		city: 'New York',
-		state: 'NY',
-		zip: '',
-		long: '',
-		lat: '',
-		country: 'USA',
-	},
-	{
-		city: 'Chicago',
-		state: 'IL',
-		zip: '',
-		long: '',
-		lat: '',
-		country: 'USA',
-	},
-	{
-		city: 'Seattle',
-		state: 'WA',
-		zip: '',
-		long: '',
-		lat: '',
-		country: 'USA',
-	},
-];
-
 // Populate the searched cities section
 function searchHistory() {
+	var pastCities = JSON.parse(localStorage.getItem('weather'));
 	var savedCities = document.querySelector('#savedCities');
 
-	for (var i = 0; i < pastCities.length && i < 7; i++) {
+	//clear section for reset
+	savedCities.innerHTML = '';
+
+	for (var i = 0; i < pastCities.length && i < 5; i++) {
 		var btn = document.createElement('BUTTON');
 		btn.setAttribute('class', 'btn btn-secondary m-1');
 		btn.setAttribute('id', 'searchHistBtn');
 		btn.innerHTML = pastCities[i].city;
-		console.log(btn);
 		savedCities.append(btn);
 	}
 }
 
+// View currentLookupCity [populates tables]
+function viewForecast() {
+	var cityName = currentCityLookup.city;
+	var date = dayjs
+		.unix(currentCityLookup.current_date)
+		.format('MM/DD/YYYY HH:MM');
+	var currWeatherIcon = `<img src="http://openweathermap.org/img/wn/${currentCityLookup.current_icon}.png" alt="weather icon">`;
+	currDay.children[0].innerHTML = `${cityName} (${date}) ${currWeatherIcon}`;
+
+	var ulEl = document.createElement('ul');
+	ulEl.setAttribute('id', 'uList');
+
+	currDay.append(ulEl);
+	// console.log(Object.keys(currentCityLookup).length);
+	for (var i = 0; i < Object.keys(currentCityLookup).length; i++) {
+		// console.log(Object.keys(currentCityLookup)[i]);
+		if (Object.keys(currentCityLookup)[i] === `current_temp`) {
+			var ilEl = document.createElement('il');
+			ilEl.setAttribute('id', Object.keys(currentCityLookup)[i]);
+			ilEl.textContent = Object.keys(currentCityLookup)[i];
+			ulEl.append(ilEl);
+		}
+	}
+}
+
+// Populate the search history at load of page
 searchHistory();
 
 // var listCity = data.name;
