@@ -200,10 +200,16 @@ function viewForecast() {
 		pEl.setAttribute('id', param);
 		if (param === 'current_uvi') {
 			if (output <= 2) {
-				iEl.setAttribute('class', 'fas fa-thumbs-up uvIndexGreen p-2');
+				iEl.setAttribute(
+					'class',
+					'fas fa-exclamation-triangle uvIndexGreen p-2'
+				);
 				spanEl.innerHTML = '';
 			} else if (output <= 5) {
-				iEl.setAttribute('class', 'fas fa-stop-circle uvIndexYellow p-2');
+				iEl.setAttribute(
+					'class',
+					'fas fa-exclamation-triangle uvIndexYellow p-2'
+				);
 				spanEl.innerHTML = '';
 			} else {
 				iEl.setAttribute('class', 'fas fa-exclamation-triangle uvIndexRed p-2');
