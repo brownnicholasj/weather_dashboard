@@ -109,7 +109,7 @@ searchBtn.addEventListener('click', function (event) {
 			// }
 			searchHistory();
 			currentCityLookup = detailWeather;
-			clearCurrent('uList');
+			clearCurrent('currentDay');
 			// console.log(currentCityLookup);
 			viewForecast();
 			view5day(
@@ -173,7 +173,10 @@ function viewForecast() {
 		.unix(currentCityLookup.current_date)
 		.format('MM/DD/YYYY HH:MM');
 	var currWeatherIcon = `<img src="http://openweathermap.org/img/wn/${currentCityLookup.current_icon}.png" alt="weather icon">`;
-	currDay.children[0].innerHTML = `${cityName} (${date}) ${currWeatherIcon}`;
+	var cityTitle = document.createElement('h2');
+	cityTitle.setAttribute('id', 'cityTitle');
+	cityTitle.innerHTML = `${cityName} (${date}) ${currWeatherIcon}`;
+	currDay.append(cityTitle);
 
 	var ulEl = document.createElement('ul');
 	ulEl.setAttribute('id', 'uList');
@@ -230,11 +233,12 @@ function viewForecast() {
 
 //clear currentView
 function clearCurrent(elementid) {
+	console.log('clearcurrent was ran');
 	var removeEl = document.getElementById(elementid);
 	if (removeEl !== null) {
 		var count = removeEl.childElementCount;
-		while (removeEl.firstChild) {
-			removeEl.removeChild(removeEl.firstChild);
+		while (removeEl.hasChildNodes()) {
+			removeEl.removeChild(removeEl.lastChild);
 		}
 	}
 }
@@ -266,11 +270,24 @@ function view5day(date, icon, temp, wind, humid) {
 	forecastDays.append(divEl);
 }
 
-function handleHistClick() {
-	console.log(this);
+function handleHistClick(event) {
+	var cityValue = event.target.innerHTML;
+	pullSavedCityData(cityValue);
 }
 
-savedCities.addEventListener('click', '.btn', handleHistClick);
+function pullSavedCityData(city) {
+	var pastCities = JSON.parse(localStorage.getItem('weather'));
+	for (var i = 0; i < pastCities.length; i++) {
+		if (pastCities[i].city === city) {
+			currentCityLookup = pastCities[i];
+			clearCurrent('currentDay');
+			viewForecast();
+			return console.log(currentCityLookup);
+		}
+	}
+}
+
+savedCities.addEventListener('click', handleHistClick);
 
 // Populate the search history at load of page
 searchHistory();
