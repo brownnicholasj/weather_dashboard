@@ -157,7 +157,7 @@ function searchHistory() {
 	//clear section for reset
 	savedCities.innerHTML = '';
 
-	for (var i = 0; i < pastCities.length && i < 5; i++) {
+	for (var i = 0; i < pastCities.length && i < 7; i++) {
 		var btn = document.createElement('BUTTON');
 		btn.setAttribute('class', 'btn btn-secondary m-1');
 		btn.setAttribute('id', 'searchHistBtn');
@@ -203,19 +203,27 @@ function viewForecast() {
 	function currentTempAttr(param, label, output, uom) {
 		var pEl = document.createElement('p');
 		var spanEl = document.createElement('span');
+		var iEl = document.createElement('i');
 		spanEl.innerHTML = uom;
 		pEl.setAttribute('id', param);
 		if (param === 'current_uvi') {
 			if (output <= 2) {
-				spanEl.setAttribute('class', 'uvIndexGreen');
+				iEl.setAttribute('class', 'fas fa-thumbs-up uvIndexGreen p-2');
+				spanEl.innerHTML = '';
 			} else if (output <= 5) {
-				spanEl.setAttribute('class', 'uvIndexYellow');
+				iEl.setAttribute('class', 'fas fa-stop-circle uvIndexYellow p-2');
+				spanEl.innerHTML = '';
 			} else {
-				spanEl.setAttribute('class', 'uvIndexRed');
+				iEl.setAttribute('class', 'fas fa-exclamation-triangle uvIndexRed p-2');
+				spanEl.innerHTML = '';
 			}
 		}
 		pEl.innerHTML = `${label}: ${output} `;
-		pEl.append(spanEl);
+		if (param === 'current_uvi') {
+			pEl.append(iEl);
+		} else {
+			pEl.append(spanEl);
+		}
 		ulEl.append(pEl);
 	}
 }

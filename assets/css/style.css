@@ -49,14 +49,14 @@ header {
 #fcContainer {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-evenly;
+	justify-content: flex-start;
 }
 
 #forecastBox {
 	background-color: darkblue;
 	color: white;
-	margin: 4px;
-	padding: 2px;
+	margin: 5px;
+	padding: 10px;
 }
 
 #searchHistBtn {
