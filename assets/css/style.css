@@ -46,9 +46,36 @@ header {
 	min-height: 200px;
 }
 
+#fcContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
+#forecastBox {
+	background-color: darkblue;
+	color: white;
+	margin: 4px;
+	padding: 2px;
+}
+
 #searchHistBtn {
 	border: 2px solid black;
 	box-shadow: 1px 1px 3px black;
+}
+
+.uvIndexGreen {
+	background-color: green;
+	color: black;
+}
+.uvIndexYellow {
+	background-color: yellow;
+	color: black;
+}
+
+.uvIndexRed {
+	background-color: red;
+	color: black;
 }
 
 @media only screen and (max-width: 600px) {
