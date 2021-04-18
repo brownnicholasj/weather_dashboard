@@ -2,6 +2,7 @@
 var searchBtn = document.querySelector('#searchBtn');
 var currDay = document.querySelector('#currentDay');
 var forecastDays = document.querySelector('#fcContainer');
+var savedCities = document.querySelector('#savedCities');
 var weatherAPI = '8b5e2ad6d72ea564603e9e5c823217fd';
 var today = dayjs().format('MM_DD_YYYY H');
 var todayFormatted = dayjs().format('MM/DD/YYYY HH:MM');
@@ -152,7 +153,6 @@ searchBtn.addEventListener('click', function (event) {
 // Populate the searched cities section
 function searchHistory() {
 	var pastCities = JSON.parse(localStorage.getItem('weather'));
-	var savedCities = document.querySelector('#savedCities');
 
 	//clear section for reset
 	savedCities.innerHTML = '';
@@ -265,6 +265,12 @@ function view5day(date, icon, temp, wind, humid) {
 	divEl.append(ulEl);
 	forecastDays.append(divEl);
 }
+
+function handleHistClick() {
+	console.log(this);
+}
+
+savedCities.addEventListener('click', '.btn', handleHistClick);
 
 // Populate the search history at load of page
 searchHistory();
