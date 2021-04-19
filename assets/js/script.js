@@ -1,4 +1,4 @@
-//Button listener for search
+// global variable storage
 var searchBtn = document.querySelector('#searchBtn');
 var currDay = document.querySelector('#currentDay');
 var forecastDays = document.querySelector('#fcContainer');
@@ -9,6 +9,7 @@ var todayFormatted = dayjs().format('MM/DD/YYYY');
 
 var currentCityLookup = [];
 
+//call openWeather API and store data to local
 searchBtn.addEventListener('click', function (event) {
 	event.preventDefault;
 	event.stopPropagation;
@@ -141,6 +142,9 @@ searchBtn.addEventListener('click', function (event) {
 		});
 });
 
+// eventListener for saved cities button click
+savedCities.addEventListener('click', handleHistClick);
+
 // Populate the searched cities section
 function searchHistory() {
 	var pastCities = JSON.parse(localStorage.getItem('weather'));
@@ -264,11 +268,13 @@ function view5day(date, icon, temp, wind, humid) {
 	forecastDays.append(divEl);
 }
 
+// handles historic/saved cities button click
 function handleHistClick(event) {
 	var cityValue = event.target.innerHTML;
 	pullSavedCityData(cityValue);
 }
 
+// executes actions from saved cities button click
 function pullSavedCityData(city) {
 	var pastCities = JSON.parse(localStorage.getItem('weather'));
 	for (var i = 0; i < pastCities.length; i++) {
@@ -317,6 +323,7 @@ function pullSavedCityData(city) {
 	}
 }
 
+// maintenance function on local storage to clear out data older than current date
 function localStorageMaintenance(date) {
 	var storedCities = JSON.parse(localStorage.getItem('weather'));
 	for (var i = 0; i < storedCities.length; i++) {
@@ -330,9 +337,7 @@ function localStorageMaintenance(date) {
 	localStorage.setItem('weather', JSON.stringify(storedCities));
 }
 
-savedCities.addEventListener('click', handleHistClick);
-
 // Populate the search history at load of page
 searchHistory();
-// maintain local storage to clear old data
+// maintain local storage to clear old data upon page load
 localStorageMaintenance(todayFormatted);

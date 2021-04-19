@@ -1,6 +1,4 @@
-:root {
-}
-
+/* Font family from google fonts */
 body {
 	font-family: 'Merriweather', serif;
 }
@@ -37,13 +35,13 @@ header {
 #currentDay {
 	border: 2px solid black;
 	margin: 5px;
-	min-height: 200px;
+	min-height: 230px;
 }
 
 #forecast {
 	border: 2px solid black;
 	margin: 5px;
-	min-height: 200px;
+	min-height: 286px;
 }
 
 #fcContainer {
@@ -76,6 +74,7 @@ img {
 	border-radius: 1.1em;
 }
 
+/* color image indicators for UV Index */
 .uvIndexGreen {
 	background-color: green;
 	color: black;
@@ -96,6 +95,7 @@ img {
 	box-shadow: 2px 2px 3px black;
 }
 
+/* account for smaller screen sizes to stack for mobile first design */
 @media only screen and (max-width: 600px) {
 	.container {
 		flex-direction: column;
